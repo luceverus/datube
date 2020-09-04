@@ -16,14 +16,39 @@ main {
 }
 
 button,
-input {
+input:not([type="file"]),
+textarea,
+.fileUpload {
   background-color: white;
+  color:$black;
   padding: 10px;
   width: 100%;
+  border: none;
   border-radius: 7px 10px;
   font-size: 14px;
   font-weight: 300;
+  max-width: 320px;
+  resize: none;
   &::placeholder {
     color: rgba(0, 0, 0, 0.7);
   }
+}
+
+button{
+  border: none;
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+  &:focus{
+    outline:unset
+  }
+}
+
+button.delete{
+  background-color: $dark-red;
+}
+
+.fileUpload{
+  background-color: white;
+  margin-bottom: 25px;;
 }
