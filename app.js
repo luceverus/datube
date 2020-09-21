@@ -3,12 +3,21 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import globalRouter from "./routers/globalRouter";
 import helmet from "helmet";
-import { localMiddleware } from "./middlewares";
+import passport from "passport";
+import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import { localsMiddleware } from "./middlewares";
 import morgan from "morgan";
 import routes from "./routes";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
+
+import "./passport";
+
 const app = express();
+
+const CookieStore = MongoStore(session);
 
 app.use(helmet.dnsPrefetchControl());
 app.use(helmet.expectCt());
@@ -27,7 +36,18 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
-app.use(localMiddleware);
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: false,
+    store: new CookieStore({ monooseConnection: mongoose.connection }),
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(localsMiddleware);
 
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter);
