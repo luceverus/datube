@@ -1,10 +1,6 @@
 .videoPlayer {
   position: relative;
-  &:hover {
-    .videoPlayer__controls {
-      opacity: 1;
-    }
-  }
+
   video {
     width: 100%;
     max-width: 100%;
@@ -25,9 +21,19 @@
     .videoPlayer__column:first-child {
       display: flex;
       align-items: center;
-      span:first-child {
+      #jsVolumeBtn {
         margin-right: 10px;
       }
+    }
+    .videoPlayer__volume {
+      position: absolute;
+      padding: 0;
+      opacity: 1;
+      top: -65px;
+      left: -25px;
+      transform: rotate(-90deg);
+      z-index: 10;
+      width: 80px;
     }
     .videoPlayer__column:last-child {
       justify-self: end;
